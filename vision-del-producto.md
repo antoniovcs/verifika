@@ -87,7 +87,7 @@
 
 **Alternativa 1: Cascada**
 
-*Por qué la descarté:* la cascada apuesta a que los requisitos ya están claros y no van a cambiar, y ese no es mi caso. La forma exacta en que se muestra un veredicto lo que más le importa a los tres tipos de usuario que definí— sigue siendo una pregunta abierta, no un requisito cerrado. Si sigo cascada y me equivoco en la fase de especificación, no lo voy a descubrir hasta la validación, cuando ya esté todo construido encima de esa decisión.
+*Por qué la descarté:* la cascada apuesta a que los requisitos ya están claros y no van a cambiar, y ese no es mi caso. La forma exacta en que se muestra un veredicto lo que más le importa a los tres tipos de usuario que definí sigue siendo una pregunta abierta, no un requisito cerrado. Si sigo cascada y me equivoco en la fase de especificación, no lo voy a descubrir hasta la validación, cuando ya esté todo construido encima de esa decisión.
 
 **Alternativa 2: Espiral**
 
