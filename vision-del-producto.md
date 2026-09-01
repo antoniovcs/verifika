@@ -8,7 +8,6 @@
 
 **Autor:** Anton
 **Fecha de la última versión:** 25 de agosto de 2026
-**Repositorio:** _(pendiente — agregar el enlace del repo aquí)_
 
 ---
 
@@ -16,7 +15,7 @@
 
 **Nombre del sistema:** Verifika
 
-**Descripción:** Verifika es un sistema donde una persona puede pegar algo que le dijo un chatbot de inteligencia artificial —un dato, una afirmación, o un pedazo de código— y un agente de inteligencia artificial lo revisa contra fuentes confiables para decir qué tan cierto u óptimo es. El sistema guarda ese resultado, para que la próxima persona con la misma duda no tenga que empezar de cero.
+**Descripción:** Verifika es un sistema donde una persona puede pegar algo que le dijo un chatbot de inteligencia artificial —un dato, una afirmación, o un pedazo de código y un agente de inteligencia artificial lo revisa contra fuentes confiables para decir qué tan cierto u óptimo es. El sistema guarda ese resultado, para que la próxima persona con la misma duda no tenga que empezar de cero.
 
 ---
 
