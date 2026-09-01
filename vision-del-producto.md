@@ -16,13 +16,13 @@
 
 **Nombre del sistema:** Verifika
 
-**Descripción:** Verifika es un sistema donde una persona puede pegar algo que le dijo un chatbot de inteligencia artificial —un dato, una afirmación, o un pedazo de código— y un agente de inteligencia artificial lo revisa contra fuentes confiables para decir qué tan cierto u óptimo es. El sistema guarda ese resultado, para que la próxima persona con la misma duda no tenga que empezar de cero.
+**Descripción:** Verifika es un sistema donde una persona puede pegar algo que le dijo un chatbot de inteligencia artificial un dato, una afirmación, o un pedazo de código y un agente de inteligencia artificial lo revisa contra fuentes confiables para decir qué tan cierto u óptimo es. El sistema guarda ese resultado, para que la próxima persona con la misma duda no tenga que empezar de cero.
 
 ---
 
 ## 2. Problema y usuarios
 
-**El problema:** la gente recibe respuestas de chatbots de IA todo el tiempo —afirmaciones, explicaciones, código— y no tiene una forma rápida de saber qué tan confiables son. El resultado es que muchas veces le cree a la IA sin cuestionarla, incluso cuando se equivoca.
+**El problema:** la gente recibe respuestas de chatbots de IA todo el tiempo afirmaciones, explicaciones, código y no tiene una forma rápida de saber qué tan confiables son. El resultado es que muchas veces le cree a la IA sin cuestionarla, incluso cuando se equivoca.
 
 **Cómo se resuelve hoy sin el sistema:** cada persona verifica por su cuenta, buscando manualmente en internet dato por dato, o simplemente confía en lo que la IA le dijo sin comprobarlo. Ese trabajo de verificación, cuando se hace, se pierde: nadie más se beneficia de él, y la siguiente persona con la misma duda empieza desde cero.
 
@@ -73,9 +73,9 @@
 
 **Reglas de negocio que ya identifiqué:**
 
-1. Si el agente de IA no encuentra fuentes suficientes para respaldar o refutar una afirmación, el sistema no puede forzar un veredicto de "cierto" o "falso" — debe devolver explícitamente "no se pudo verificar", porque un veredicto inventado por falta de información es más dañino que admitir que no se sabe.
-2. Si dos revisiones del mismo contenido llegan a resultados distintos (por ejemplo, al pedir una segunda revisión), el sistema no puede simplemente quedarse con el resultado más reciente o promediar ambos — debe marcar el contenido como "en disputa" hasta que se resuelva, porque mostrar seguridad donde no la hay es peor que mostrar que existe un desacuerdo.
-3. El tipo de contenido que se verifica (afirmación de texto vs. fragmento de código) determina el formato del veredicto que se muestra: uno puede resolverse como cierto/falso/dudoso, pero el otro necesita mostrarse como un espectro de mejora, no como una respuesta binaria.
+1. Si el agente de IA no encuentra fuentes suficientes para respaldar o refutar una afirmación, el sistema no puede forzar un veredicto de "cierto" o "falso" debe devolver explícitamente "no se pudo verificar", porque un veredicto inventado por falta de información es más dañino que admitir que no se sabe.
+5. Si dos revisiones del mismo contenido llegan a resultados distintos (por ejemplo, al pedir una segunda revisión), el sistema no puede simplemente quedarse con el resultado más reciente o promediar ambos debe marcar el contenido como "en disputa" hasta que se resuelva, porque mostrar seguridad donde no la hay es peor que mostrar que existe un desacuerdo.
+8. El tipo de contenido que se verifica (afirmación de texto vs. fragmento de código) determina el formato del veredicto que se muestra: uno puede resolverse como cierto/falso/dudoso, pero el otro necesita mostrarse como un espectro de mejora, no como una respuesta binaria.
 
 ---
 
@@ -89,25 +89,8 @@
 
 **Alternativa 1: Cascada**
 
-*Por qué la descarté:* la cascada apuesta a que los requisitos ya están claros y no van a cambiar, y ese no es mi caso. La forma exacta en que se muestra un veredicto —lo que más le importa a los tres tipos de usuario que definí— sigue siendo una pregunta abierta, no un requisito cerrado. Si sigo cascada y me equivoco en la fase de especificación, no lo voy a descubrir hasta la validación, cuando ya esté todo construido encima de esa decisión.
+*Por qué la descarté:* la cascada apuesta a que los requisitos ya están claros y no van a cambiar, y ese no es mi caso. La forma exacta en que se muestra un veredicto lo que más le importa a los tres tipos de usuario que definí— sigue siendo una pregunta abierta, no un requisito cerrado. Si sigo cascada y me equivoco en la fase de especificación, no lo voy a descubrir hasta la validación, cuando ya esté todo construido encima de esa decisión.
 
 **Alternativa 2: Espiral**
 
-*Por qué la descarté:* el modelo espiral está pensado para proyectos de alto riesgo, donde vale la pena invertir tiempo en analizar riesgos de forma explícita en cada vuelta del ciclo. Mi proyecto es de riesgo moderado y lo trabajo solo, en un semestre con tiempo limitado — meter el nivel de gestión de riesgo que pide el modelo espiral es más proceso del que el tamaño de este proyecto justifica. Lo que necesito no es analizar riesgos formalmente, es validar rápido una decisión de diseño con algo tangible, que es justo lo que ofrece el prototipado sin la carga adicional del espiral.
-
----
-
-## Antes de entregar
-
-Reviso que el documento cumpla lo siguiente:
-
-- [x] La descripción del apartado 1 se entiende sin ser del área
-- [x] Hay al menos dos tipos de usuario con necesidades distintas
-- [x] Identifiqué un conflicto real entre usuarios
-- [x] El alcance dice qué queda fuera, no solo qué queda dentro
-- [x] Las exclusiones son específicas, no genéricas
-- [x] Identifiqué el tipo de sistema y al menos dos atributos de calidad
-- [x] Anoté al menos tres reglas de negocio no obvias
-- [x] Justifiqué el ciclo de vida contra dos alternativas descartadas
-- [ ] El documento está en mi repositorio y se puede leer desde el navegador *(confirmar que ya esté subido en `docs/vision-del-producto.md`)*
-- [x] Borré todas las instrucciones en cursiva de la plantilla
+*Por qué la descarté:* el modelo espiral está pensado para proyectos de alto riesgo, donde vale la pena invertir tiempo en analizar riesgos de forma explícita en cada vuelta del ciclo. Mi proyecto es de riesgo moderado y lo trabajo solo, en un semestre con tiempo limitado meter el nivel de gestión de riesgo que pide el modelo espiral es más proceso del que el tamaño de este proyecto justifica. Lo que necesito no es analizar riesgos formalmente, es validar rápido una decisión de diseño con algo tangible, que es justo lo que ofrece el prototipado sin la carga adicional del espiral.
