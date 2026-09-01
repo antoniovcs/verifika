@@ -8,6 +8,7 @@
 
 **Autor:** Anton
 **Fecha de la última versión:** 25 de agosto de 2026
+**Repositorio:** https://github.com/antoniovcs/verifika/tree/main
 
 ---
 
@@ -15,7 +16,7 @@
 
 **Nombre del sistema:** Verifika
 
-**Descripción:** Verifika es un sistema donde una persona puede pegar algo que le dijo un chatbot de inteligencia artificial —un dato, una afirmación, o un pedazo de código y un agente de inteligencia artificial lo revisa contra fuentes confiables para decir qué tan cierto u óptimo es. El sistema guarda ese resultado, para que la próxima persona con la misma duda no tenga que empezar de cero.
+**Descripción:** Verifika es un sistema donde una persona puede pegar algo que le dijo un chatbot de inteligencia artificial —un dato, una afirmación, o un pedazo de código— y un agente de inteligencia artificial lo revisa contra fuentes confiables para decir qué tan cierto u óptimo es. El sistema guarda ese resultado, para que la próxima persona con la misma duda no tenga que empezar de cero.
 
 ---
 
@@ -80,21 +81,19 @@
 
 ## 5. Ciclo de vida elegido
 
-*Pendiente — este apartado se trabaja en la semana 3, después de ver los modelos de desarrollo en clase.*
+**Modelo elegido:** Prototipado rápido
 
-**Modelo elegido:**
-
-**Por qué le conviene a este proyecto:**
+**Por qué le conviene a este proyecto:** el punto más incierto de todo el diseño de Verifika no es técnico, es de experiencia de usuario: todavía no sé con certeza si el veredicto debe verse igual para los tres tipos de usuario o si el formato debe cambiar según el contenido (afirmación de texto vs. código), y esa es exactamente el tipo de duda que no se resuelve escribiéndola en un documento, sino mostrándosela a alguien y viendo cómo reacciona. Trabajo solo, sin un cliente real disponible más allá de mis propios compañeros y el profesor, así que necesito una forma barata de validar esa decisión antes de construir el sistema completo alrededor de una suposición equivocada. El riesgo más grande del proyecto no está en la parte técnica (llamar a un agente de IA y guardar resultados es relativamente directo), está en diseñar mal la forma en que se presenta el veredicto a cada usuario. El prototipado rápido deja que ese riesgo se descubra temprano, con un prototipo desechable, en vez de hasta el final.
 
 ### Alternativas descartadas
 
-**Alternativa 1:**
+**Alternativa 1: Cascada**
 
-*Por qué la descarté:*
+*Por qué la descarté:* la cascada apuesta a que los requisitos ya están claros y no van a cambiar, y ese no es mi caso. La forma exacta en que se muestra un veredicto —lo que más le importa a los tres tipos de usuario que definí— sigue siendo una pregunta abierta, no un requisito cerrado. Si sigo cascada y me equivoco en la fase de especificación, no lo voy a descubrir hasta la validación, cuando ya esté todo construido encima de esa decisión.
 
-**Alternativa 2:**
+**Alternativa 2: Espiral**
 
-*Por qué la descarté:*
+*Por qué la descarté:* el modelo espiral está pensado para proyectos de alto riesgo, donde vale la pena invertir tiempo en analizar riesgos de forma explícita en cada vuelta del ciclo. Mi proyecto es de riesgo moderado y lo trabajo solo, en un semestre con tiempo limitado — meter el nivel de gestión de riesgo que pide el modelo espiral es más proceso del que el tamaño de este proyecto justifica. Lo que necesito no es analizar riesgos formalmente, es validar rápido una decisión de diseño con algo tangible, que es justo lo que ofrece el prototipado sin la carga adicional del espiral.
 
 ---
 
@@ -109,6 +108,6 @@ Reviso que el documento cumpla lo siguiente:
 - [x] Las exclusiones son específicas, no genéricas
 - [x] Identifiqué el tipo de sistema y al menos dos atributos de calidad
 - [x] Anoté al menos tres reglas de negocio no obvias
-- [ ] Justifiqué el ciclo de vida contra dos alternativas descartadas *(pendiente — semana 3)*
-- [ ] El documento está en mi repositorio y se puede leer desde el navegador *(pendiente — subirlo)*
+- [x] Justifiqué el ciclo de vida contra dos alternativas descartadas
+- [ ] El documento está en mi repositorio y se puede leer desde el navegador *(confirmar que ya esté subido en `docs/vision-del-producto.md`)*
 - [x] Borré todas las instrucciones en cursiva de la plantilla
