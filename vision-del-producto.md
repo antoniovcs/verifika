@@ -57,7 +57,7 @@
 
 ## 4. Tipo de sistema y restricciones
 
-**Tipo de sistema:** De datos y análisis
+**Tipo de sistema:** SaaS
 
 **Por qué es de ese tipo:** el valor central de Verifika no es solo guardar y mostrar información, sino procesarla: tomar una afirmación o un fragmento de código, contrastarlo contra fuentes externas a través de un agente de IA, y producir un análisis (un veredicto con evidencia) que antes no existía. Eso lo distingue de un sistema de información simple, donde el sistema solo administraría datos que el usuario ya tiene.
 
