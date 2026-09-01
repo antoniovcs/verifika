@@ -40,7 +40,7 @@
 
 ### Dentro del alcance
 
-- Verificación de afirmaciones de texto pegadas por el usuario, usando un agente de IA que consulta fuentes confiables (Wikipedia, sitios de noticias reconocidos, documentación oficial)
+- Verificación de afirmaciones de texto pegadas por el usuario, usando un agente de IA que consulta fuentes confiables (páginas gubernamentales o de educación (gov, edu), sitios de noticias reconocidos, documentación oficial)
 - Verificación de fragmentos de código pegados por el usuario, contrastando contra documentación oficial y buenas prácticas reconocidas
 - Historial de verificaciones ya realizadas, consultable por otros usuarios para no repetir el mismo trabajo
 - Posibilidad de que un usuario marque un veredicto como "no me convence" y solicite una segunda revisión
