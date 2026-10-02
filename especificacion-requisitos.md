@@ -1,7 +1,7 @@
 # Especificación de requisitos
 
 **Sistema:** Verifika
-**Autor:** Anton
+**Autor:** Ricardo Antonio Vargas Cremades
 **Versión:** 1.0
 **Fecha de la última actualización:** 1 de octubre de 2026
 
