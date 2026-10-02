@@ -24,6 +24,7 @@
 - Verificación en tiempo real durante una conversación con un chatbot.
 - Que el sistema aprenda o ajuste sus propios criterios de verificación con el tiempo a partir de sus errores pasados.
 
+*(Este alcance se retoma íntegro de la Visión del producto; no ha cambiado desde esa versión.)*
 
 ---
 
@@ -35,7 +36,6 @@
 | Usuario avanzado / investigador | Verifica por su cuenta cruzando varias fuentes, sin un lugar que le muestre esa evidencia de forma ordenada | Ver exactamente qué fuentes citó el agente y poder pedir una segunda revisión si no le convence |
 | Programador | Usa el código sugerido por el chatbot tal cual, o lo valida manualmente contra documentación oficial cuando tiene dudas | Saber si hay una forma más óptima de resolver algo, con un formato que no sea un simple cierto/falso |
 
-**Conflictos identificados entre usuarios:**
 
 El usuario casual quiere un resultado simple tipo semáforo, pero el usuario avanzado necesita ver el detalle completo de las fuentes, y el programador no puede recibir el mismo tipo de veredicto porque "optimizar código" es un espectro, no una respuesta binaria. Esto obliga a que el formato del resultado cambie según el tipo de contenido verificado, en vez de ser uno solo para los tres usuarios.
 
@@ -185,87 +185,138 @@ El usuario casual quiere un resultado simple tipo semáforo, pero el usuario ava
 
 ## 5. Casos de uso
 
-### CU-01 · Verificar contenido
+*Diagrama completo en* `casosdeuso.drawio`. *Actores: Persona usuaria, Agente de IA, Responsable de moderación.*
 
-**Actor principal:** Usuario (casual, avanzado o programador)
+### CU-01 · Verificar una afirmación de texto
 
-**Precondición:** el usuario tiene contenido (texto o código) que quiere verificar.
+**Actores:** Persona usuaria, Agente de IA
 
-**Flujo normal:**
-
-1. El usuario pega el contenido en la pantalla principal.
-2. El usuario indica el tipo de contenido (afirmación de texto o código) y selecciona cómo quiere ver el resultado (casual, avanzado, programador).
-3. El sistema envía el contenido al agente de IA.
-4. El agente regresa un resultado con fuentes.
-5. El sistema clasifica el resultado (cierto, falso, dudoso, o nivel de optimización si es código) y lo muestra con el formato correspondiente al tipo de usuario elegido.
-6. El sistema guarda la verificación en el historial.
-
-**Flujo alterno A — Sin fuentes suficientes (RF-003):**
-
-4a. El agente no encuentra fuentes suficientes para respaldar o refutar el contenido.
-4a.1. El sistema no fuerza un veredicto de cierto o falso.
-4a.2. El sistema muestra "no se pudo verificar" como resultado.
-4a.3. El sistema guarda la verificación con ese estado en el historial.
-→ Regresa al punto 6 del flujo normal.
-
-**Flujo alterno B — Contenido ya verificado antes (RF-005):**
-
-2a. El sistema detecta que un contenido igual o muy similar ya existe en el historial.
-2a.1. El sistema muestra al usuario esa verificación existente.
-2a.2. El usuario decide si quiere usar ese resultado o pedir una verificación nueva.
-→ Si pide una nueva, continúa en el punto 3 del flujo normal. Si acepta el resultado existente, el caso de uso termina aquí.
-
-**Postcondición:** el usuario tiene un resultado visible (nuevo o reutilizado) y queda registrado en el historial.
-
----
-
-### CU-02 · Resolver disputa entre revisiones
-
-**Actor principal:** Usuario avanzado (solicita segunda revisión); Sistema (detecta la discrepancia)
-
-**Precondición:** existe una verificación previa en el historial y el usuario no está conforme con su veredicto, o el sistema recibe una segunda verificación sobre el mismo contenido.
+**Precondición:** la persona tiene una afirmación que quiere verificar.
 
 **Flujo normal:**
 
-1. El usuario marca una verificación existente como "no me convence" y solicita una segunda revisión.
-2. El sistema envía el contenido nuevamente al agente de IA.
-3. El agente regresa un nuevo resultado.
-4. El sistema compara el nuevo veredicto con el original.
-5. Si los dos veredictos coinciden, el sistema confirma el veredicto original y lo marca como "confirmado por segunda revisión".
-6. El sistema notifica al usuario el resultado de la comparación.
+1. Pega la afirmación y selecciona "texto" como tipo de contenido.
+2. El sistema envía la afirmación al agente de IA.
+3. El agente regresa un resultado con fuentes.
+4. El sistema muestra el veredicto (cierto, falso, dudoso).
+5. El sistema guarda la verificación en el historial.
 
-**Flujo alterno A — Los veredictos no coinciden (RF-004):**
+**Flujo alterno — Sin fuentes suficientes (RF-003):**
 
-4a. El nuevo veredicto es distinto al original.
-4a.1. El sistema no promedia ni sobrescribe el veredicto original.
-4a.2. El sistema marca la verificación como "en disputa".
-4a.3. La resolución queda pendiente hasta que una persona (moderador) la revise manualmente.
-→ Postcondición alterna: la verificación permanece en disputa hasta resolución manual.
+3a. El agente no encuentra fuentes suficientes.
+3a.1. El sistema muestra "no se pudo verificar" en vez de forzar un veredicto.
+3a.2. La verificación queda en la cola de CU-06 para revisión del responsable de moderación.
 
-**Postcondición:** el usuario recibe una respuesta definitiva (confirmada) o ve que su contenido quedó marcado como en disputa.
+**Postcondición:** la persona ve un resultado y queda registrado en el historial.
 
----
+### CU-02 · Evaluar un fragmento de código
 
-### CU-03 · Degradar una fuente poco confiable
+**Actores:** Persona usuaria, Agente de IA
 
-**Actor principal:** Responsable de moderación y curación de fuentes
-
-**Precondición:** una fuente ha sido usada como respaldo en al menos una verificación que después resultó incorrecta.
+**Precondición:** la persona tiene un fragmento de código sugerido por un chatbot.
 
 **Flujo normal:**
 
-1. El sistema registra que una verificación respaldada por una fuente específica fue marcada como incorrecta (por disputa resuelta, revisión manual, o retroalimentación del usuario).
-2. El sistema incrementa el contador de errores asociado a esa fuente.
-3. Si el contador llega a tres o más errores, el sistema baja la categoría de la fuente.
-4. El sistema deja de usar esa fuente como respaldo único de un veredicto futuro, aunque puede seguir mostrándola como referencia secundaria.
+1. Pega el código y selecciona "código" como tipo de contenido.
+2. El sistema envía el código al agente de IA.
+3. El agente regresa un análisis contra documentación oficial y buenas prácticas.
+4. El sistema muestra un nivel de optimización y sugerencias, no un veredicto binario.
+5. El sistema guarda la evaluación en el historial.
 
-**Flujo alterno A — Revisión manual antes de degradar (RF-006):**
+**Postcondición:** la persona ve un análisis de optimización, no un cierto/falso.
 
-3a. El responsable de moderación revisa el caso antes de que el sistema baje la categoría automáticamente.
-3a.1. El responsable confirma la degradación, o marca el error como un caso aislado sin degradar la fuente.
-→ Regresa al punto 4 solo si se confirma la degradación.
+### CU-03 · Consultar verificaciones anteriores
 
-**Postcondición:** la fuente queda marcada con su categoría actualizada (confiable o degradada), aplicable a verificaciones futuras.
+**Actor:** Persona usuaria
+
+**Precondición:** existen verificaciones guardadas en el historial.
+
+**Flujo normal:**
+
+1. La persona entra a la sección de historial.
+2. Busca por palabra clave o navega la lista.
+3. El sistema muestra las verificaciones que coinciden, con su veredicto y fecha.
+
+**Relación con RF-005:** si al iniciar CU-01 o CU-02 el sistema detecta que el contenido ya existe en el historial, redirige aquí antes de gastar una verificación nueva.
+
+**Postcondición:** la persona ve resultados existentes sin repetir trabajo.
+
+### CU-04 · Examinar las fuentes de un resultado
+
+**Actor:** Persona usuaria
+
+**Precondición:** existe un resultado de verificación con al menos una fuente registrada.
+
+**Flujo normal:**
+
+1. La persona abre un resultado específico (propio o del historial).
+2. El sistema despliega la lista completa de fuentes citadas, con su nombre y el fragmento relevante.
+
+**Postcondición:** la persona puede comprobar de dónde salió el veredicto, no solo confiar en él.
+
+### CU-05 · Solicitar una segunda revisión
+
+**Actor:** Persona usuaria
+
+**Precondición:** existe un resultado con el que la persona no está conforme.
+
+**Flujo normal:**
+
+1. La persona marca el resultado como "no me convence".
+2. El sistema reenvía el contenido al agente de IA para una nueva verificación.
+3. El sistema compara el nuevo resultado con el original.
+
+**Flujo alterno — Los veredictos no coinciden (RF-004):**
+
+3a. El nuevo veredicto es distinto al original.
+3a.1. El sistema marca la verificación como "en disputa" (continúa en CU-07).
+
+**Postcondición:** la persona recibe confirmación del veredicto original, o ve que quedó en disputa.
+
+### CU-06 · Revisar casos sin evidencia o en disputa
+
+**Actor:** Responsable de moderación
+
+**Precondición:** hay verificaciones marcadas como "no se pudo verificar" o "en disputa" pendientes.
+
+**Flujo normal:**
+
+1. El responsable abre el tablero de casos pendientes.
+2. Revisa cada caso buscando contexto adicional.
+3. Resuelve el caso manualmente o lo deja pendiente si requiere más información.
+
+**Postcondición:** los casos revisados quedan resueltos o documentados con lo que falta.
+
+### CU-07 · Resolver una disputa
+
+**Actor:** Responsable de moderación
+
+**Precondición:** una verificación está marcada como "en disputa" (originada en CU-05).
+
+**Flujo normal:**
+
+1. El responsable compara las fuentes citadas por cada revisión.
+2. Decide cuál veredicto es correcto, o si ambos aplican con matices distintos.
+3. El sistema actualiza el estado de la verificación según la decisión.
+
+**Postcondición:** la disputa queda resuelta y el historial refleja la decisión final.
+
+### CU-08 · Curar fuentes de referencia
+
+**Actor:** Responsable de moderación
+
+**Precondición:** una fuente ha sido usada como respaldo en al menos una verificación.
+
+**Flujo normal:**
+
+1. El responsable revisa el desempeño de una fuente (cuántas veces respaldó un veredicto correcto o incorrecto).
+2. Si la fuente acumula errores repetidos, decide bajarle la categoría.
+
+**Flujo alterno — Revisión manual antes de degradar (RF-006):**
+
+2a. El responsable decide que un error fue un caso aislado y no degrada la fuente.
+
+**Postcondición:** la lista de fuentes confiables queda actualizada.
 
 ---
 
@@ -273,12 +324,13 @@ El usuario casual quiere un resultado simple tipo semáforo, pero el usuario ava
 
 | Requisito | Origen | Caso de uso | Elemento del prototipo |
 |---|---|---|---|
-| RF-001 | Visión del producto | CU-01 Verificar contenido | Pantalla de resultado / Historial |
-| RF-002 | Visión del producto | CU-01 Verificar contenido | Selector "Afirmación de texto / Código" en Home |
-| RF-003 | Entrevista 1 oct 2026 | CU-01 Verificar contenido (flujo alterno A) | Pantalla de resultado (estado "no se pudo verificar") |
-| RF-004 | Entrevista 1 oct 2026 | CU-02 Resolver disputa entre revisiones | Historial (estado "en disputa") |
-| RF-005 | Visión del producto | CU-01 Verificar contenido (flujo alterno B) | *No implementado todavía en el prototipo — pendiente tras hallazgo de la entrevista* |
-| RF-006 | Entrevista 1 oct 2026 | CU-03 Degradar una fuente poco confiable | No implementado todavía en el prototipo |
+| RF-001 | Visión del producto | CU-01, CU-02 | Pantalla de resultado / Historial |
+| RF-002 | Visión del producto | CU-01, CU-02 | Selector "Afirmación de texto / Código" en Home |
+| RF-003 | Entrevista 1 oct 2026 | CU-01 (flujo alterno), CU-06 | Pantalla de resultado (estado "no se pudo verificar") |
+| RF-004 | Entrevista 1 oct 2026 | CU-05 (flujo alterno), CU-07 | Historial (estado "en disputa") |
+| RF-005 | Visión del producto | CU-03 | *No implementado todavía en el prototipo — pendiente tras hallazgo de la entrevista* |
+| RF-006 | Entrevista 1 oct 2026 | CU-08 | No implementado todavía en el prototipo |
+| RNF-TRZ-001 | Visión del producto | CU-04 | Detalle de fuentes en la pantalla de resultado |
 
 ---
 
@@ -287,5 +339,3 @@ El usuario casual quiere un resultado simple tipo semáforo, pero el usuario ava
 | Fecha | Requisito | Qué cambió | Por qué |
 |---|---|---|---|
 | 1 de octubre de 2026 | RF-003, RF-004, RF-006 | Se agregaron tras la entrevista de elicitación con el responsable de moderación | La entrevista confirmó reglas de negocio que no eran obvias desde la Visión del producto original |
-
----
