@@ -24,8 +24,6 @@
 - Verificación en tiempo real durante una conversación con un chatbot.
 - Que el sistema aprenda o ajuste sus propios criterios de verificación con el tiempo a partir de sus errores pasados.
 
-*(Este alcance se retoma íntegro de la Visión del producto; no ha cambiado desde esa versión.)*
-
 ---
 
 ## 2. Usuarios y su contexto
@@ -210,17 +208,3 @@ El usuario casual quiere un resultado simple tipo semáforo, pero el usuario ava
 | 1 de octubre de 2026 | RF-003, RF-004, RF-006 | Se agregaron tras la entrevista de elicitación con el responsable de moderación | La entrevista confirmó reglas de negocio que no eran obvias desde la Visión del producto original |
 
 ---
-
-## Antes de entregar
-
-- [x] Todos los requisitos tienen identificador único y ninguno está repetido
-- [x] Cada requisito expresa una sola idea
-- [x] Cada requisito funcional tiene criterio de aceptación comprobable
-- [x] Cada requisito no funcional tiene una métrica, no solo un adjetivo
-- [x] El campo Origen distingue lo confirmado por el cliente de lo que sigo suponiendo
-- [x] Hay al menos un requisito no funcional por cada atributo de calidad que impone mi tipo de sistema
-- [x] Ningún requisito impone una solución técnica
-- [x] Todos los requisitos caben dentro del alcance declarado
-- [ ] La tabla de trazabilidad está completa *(pendiente — faltan los casos de uso de la semana 7)*
-- [ ] Mi dupla revisó el documento y su revisión está registrada *(pendiente)*
-- [x] Borré los ejemplos y las instrucciones en cursiva
