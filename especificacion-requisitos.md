@@ -9,7 +9,7 @@
 
 ## 1. Propósito y alcance
 
-**Propósito del documento:** este documento detalla los requisitos funcionales y no funcionales de Verifika, a partir de lo definido en la Visión del producto y enriquecido con lo elicitado en la entrevista al responsable de moderación y curación de fuentes del sistema. Va dirigido a quien continúe el desarrollo del sistema (incluyéndome a mí mismo en semanas posteriores) y a quien evalúe el proyecto.
+**Propósito del documento:** este documento detalla los requisitos funcionales y no funcionales de Verifika, a partir de lo definido en la Visión del producto. Va dirigido a quien continúe el desarrollo del sistema (incluyéndome a mí mismo en semanas posteriores) y a quien evalúe el proyecto.
 
 **Alcance del sistema:**
 
