@@ -9,9 +9,7 @@ sequenceDiagram
 
     Note over Persona,Agente: CU-01 · Se asume que el contenido no tiene coincidencia previa (RF-005).
     Persona->>UI: enviarContenido(contenido, tipo)
-    activate UI
     UI->>Servicio: verificar(contenido, tipo)
-    activate Servicio
     Servicio->>Historial: buscarCoincidencia(contenido, tipo)
     activate Historial
     Historial-->>Servicio: sinCoincidencia
@@ -43,9 +41,7 @@ sequenceDiagram
         Historial-->>Servicio: registroConfirmado
         deactivate Historial
         Servicio-->>UI: mostrarResultado(verificacion)
-        deactivate Servicio
         UI-->>Persona: veredicto y acceso a fuentes
-        deactivate UI
     else no hay evidencia suficiente
         Servicio->>Revision: registrarSinEvidencia(analisis, fuentes)
         activate Revision
@@ -64,7 +60,5 @@ sequenceDiagram
         Historial-->>Servicio: registroConfirmado
         deactivate Historial
         Servicio-->>UI: mostrarSinEvidencia(verificacion)
-        deactivate Servicio
         UI-->>Persona: «no se pudo verificar»
-        deactivate UI
     end
