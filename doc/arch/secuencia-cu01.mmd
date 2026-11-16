@@ -8,30 +8,63 @@ sequenceDiagram
     participant Revision as Revision
 
     Note over Persona,Agente: CU-01 · Se asume que el contenido no tiene coincidencia previa (RF-005).
-    Persona->>+UI: enviarContenido(contenido, tipo)
-    UI->>+Servicio: verificar(contenido, tipo)
-    Servicio->>+Historial: buscarCoincidencia(contenido, tipo)
-    Historial-->>-Servicio: sinCoincidencia
+    Persona->>UI: enviarContenido(contenido, tipo)
+    activate UI
+    UI->>Servicio: verificar(contenido, tipo)
+    activate Servicio
+    Servicio->>Historial: buscarCoincidencia(contenido, tipo)
+    activate Historial
+    Historial-->>Servicio: sinCoincidencia
+    deactivate Historial
     Servicio->>Verificacion: crear(contenido, tipo)
-    Servicio->>+Agente: analizar(contenido, tipo)
-    Agente-->>-Servicio: analisis, fuentes, veredicto propuesto
+    activate Verificacion
+    Verificacion-->>Servicio: verificacion
+    deactivate Verificacion
+    Servicio->>Agente: analizar(contenido, tipo)
+    activate Agente
+    Agente-->>Servicio: analisis, fuentes, veredicto propuesto
+    deactivate Agente
 
     alt evidencia suficiente y fuentes pertinentes
-        Servicio->>+Revision: registrar(analisis, veredicto, fuentes)
-        Revision-->>-Servicio: revision
+        Servicio->>Revision: registrar(analisis, veredicto, fuentes)
+        activate Revision
+        Revision-->>Servicio: revision
+        deactivate Revision
         Servicio->>Verificacion: agregarRevision(revision)
+        activate Verificacion
+        Verificacion-->>Servicio: revision agregada
+        deactivate Verificacion
         Servicio->>Verificacion: establecerEstado(estado, veredicto)
-        Servicio->>+Historial: guardar(verificacion)
-        Historial-->>-Servicio: registroConfirmado
-        Servicio-->>-UI: mostrarResultado(verificacion)
-        UI-->>-Persona: veredicto y acceso a fuentes
+        activate Verificacion
+        Verificacion-->>Servicio: estado actualizado
+        deactivate Verificacion
+        Servicio->>Historial: guardar(verificacion)
+        activate Historial
+        Historial-->>Servicio: registroConfirmado
+        deactivate Historial
+        Servicio-->>UI: mostrarResultado(verificacion)
+        deactivate Servicio
+        UI-->>Persona: veredicto y acceso a fuentes
+        deactivate UI
     else no hay evidencia suficiente
-        Servicio->>+Revision: registrarSinEvidencia(analisis, fuentes)
-        Revision-->>-Servicio: revision sin veredicto concluyente
+        Servicio->>Revision: registrarSinEvidencia(analisis, fuentes)
+        activate Revision
+        Revision-->>Servicio: revision sin veredicto concluyente
+        deactivate Revision
         Servicio->>Verificacion: agregarRevision(revision)
+        activate Verificacion
+        Verificacion-->>Servicio: revision agregada
+        deactivate Verificacion
         Servicio->>Verificacion: marcarSinEvidencia()
-        Servicio->>+Historial: guardar(verificacion)
-        Historial-->>-Servicio: registroConfirmado
-        Servicio-->>-UI: mostrarSinEvidencia(verificacion)
-        UI-->>-Persona: «no se pudo verificar»
+        activate Verificacion
+        Verificacion-->>Servicio: estado actualizado
+        deactivate Verificacion
+        Servicio->>Historial: guardar(verificacion)
+        activate Historial
+        Historial-->>Servicio: registroConfirmado
+        deactivate Historial
+        Servicio-->>UI: mostrarSinEvidencia(verificacion)
+        deactivate Servicio
+        UI-->>Persona: «no se pudo verificar»
+        deactivate UI
     end
