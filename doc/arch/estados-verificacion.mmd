@@ -1,0 +1,31 @@
+stateDiagram-v2
+    title Ciclo de vida de Verificacion
+
+    [*] --> EnAnalisis: solicitarVerificacion / crear(contenido, tipo)
+
+    EnAnalisis --> Verificada: analizar [evidencia suficiente y conclusion clara] / registrarVeredicto()
+    EnAnalisis --> Dudosa: analizar [fuentes suficientes con resultados contradictorios] / registrarContraste()
+    EnAnalisis --> SinEvidencia: analizar [evidencia insuficiente] / registrarSinEvidencia()
+
+    Verificada --> SegundaRevision: solicitarSegundaRevision / conservarRevisionOriginal()
+    Dudosa --> SegundaRevision: solicitarSegundaRevision / conservarRevisionOriginal()
+    SinEvidencia --> SegundaRevision: solicitarSegundaRevision / conservarRevisionOriginal()
+
+    SegundaRevision --> EnDisputa: compararRevisiones [resultados distintos] / conservarAmbasRevisiones()
+    SegundaRevision --> Verificada: compararRevisiones [coinciden y hay respaldo suficiente] / agregarRevision()
+    SegundaRevision --> Dudosa: compararRevisiones [resultado dudoso con evidencia] / agregarRevision()
+    SegundaRevision --> SinEvidencia: compararRevisiones [sigue sin evidencia] / registrarSinEvidencia()
+
+    EnDisputa --> Resuelta: resolver(decision, nota) / registrarNotaActualizacion()
+    SinEvidencia --> Resuelta: resolver(decision, nota) / registrarNotaActualizacion()
+    SinEvidencia --> EnAnalisis: aportarContexto / iniciarNuevaRevision()
+
+    note right of EnDisputa
+        No se reemplaza la revision original.
+        Moderacion debe resolver el desacuerdo (RF-004).
+    end note
+
+    note right of SinEvidencia
+        La interfaz presenta «no se pudo verificar».
+        No se fuerza cierto o falso (RF-003).
+    end note

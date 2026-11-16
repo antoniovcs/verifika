@@ -1,0 +1,56 @@
+flowchart TD
+    inicio((Inicio))
+
+    subgraph persona[Persona usuaria]
+        pegar[Pegar afirmacion o codigo]
+        revisar[Revisar veredicto y fuentes]
+        abrirPrevio[Abrir verificacion existente]
+        pedirSegunda[Solicitar segunda revision]
+    end
+
+    subgraph verifika[Verifika]
+        clasificar[Clasificar tipo de contenido]
+        buscar[Buscar coincidencia en historial]
+        coincide{Existe coincidencia?}
+        preparar[Preparar verificacion]
+        evaluar[Evaluar evidencia y resultado]
+        suficiente{Evidencia suficiente?}
+        segunda{Es una segunda revision?}
+        comparar[Comparar revision nueva con original]
+        difiere{Los resultados difieren?}
+        registrar[Registrar verificacion, revision y fuentes]
+        sinEvidencia[Registrar estado «no se pudo verificar»]
+        marcarDisputa[Marcar «en disputa» y conservar ambas revisiones]
+        mostrar[Mostrar resultado y fuentes]
+    end
+
+    subgraph agenteIA[Agente de IA externo]
+        analizar[Analizar contenido y consultar fuentes]
+        fuenteDegradada{La unica fuente de respaldo esta degradada?}
+        buscarRespaldo[Buscar respaldo adicional]
+        respuesta[Devolver analisis, resultado propuesto y fuentes]
+    end
+
+    subgraph moderacion[Responsable de moderacion]
+        revisarCaso[Revisar caso sin evidencia o en disputa]
+        casoDisputa{El caso esta en disputa?}
+        resolver[Resolver disputa y registrar nota]
+        documentar[Documentar que falta evidencia]
+    end
+
+    inicio --> pegar --> clasificar --> buscar --> coincide
+    coincide -->|Si, RF-005| abrirPrevio --> revisar
+    coincide -->|No| preparar --> analizar --> fuenteDegradada
+    fuenteDegradada -->|Si, RF-006| buscarRespaldo --> respuesta
+    fuenteDegradada -->|No| respuesta
+    respuesta --> evaluar --> suficiente
+    suficiente -->|No, RF-003| sinEvidencia --> mostrar --> revisarCaso --> casoDisputa
+    suficiente -->|Si| segunda
+    segunda -->|No, primera revision| registrar --> mostrar --> revisar
+    segunda -->|Si| comparar --> difiere
+    difiere -->|Si, RF-004| marcarDisputa --> revisarCaso
+    casoDisputa -->|Si, RF-004| resolver --> fin((Fin))
+    casoDisputa -->|No, RF-003| documentar --> fin
+    difiere -->|No, resultados compatibles| registrar
+    revisar -->|Solicita otra revision, RF-004| pedirSegunda --> analizar
+    revisar -->|Termina| fin

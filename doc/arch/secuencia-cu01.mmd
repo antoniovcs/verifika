@@ -1,0 +1,37 @@
+sequenceDiagram
+    actor Persona as Persona usuaria
+    participant UI as Interfaz Verifika
+    participant Servicio as Servicio de verificacion
+    participant Historial as Repositorio de verificaciones
+    participant Verificacion as Verificacion
+    participant Agente as Agente de IA externo
+    participant Revision as Revision
+
+    Note over Persona,Agente: CU-01 · Se asume que el contenido no tiene coincidencia previa (RF-005).
+    Persona->>+UI: enviarContenido(contenido, tipo)
+    UI->>+Servicio: verificar(contenido, tipo)
+    Servicio->>+Historial: buscarCoincidencia(contenido, tipo)
+    Historial-->>-Servicio: sinCoincidencia
+    Servicio->>Verificacion: crear(contenido, tipo)
+    Servicio->>+Agente: analizar(contenido, tipo)
+    Agente-->>-Servicio: analisis, fuentes, veredicto propuesto
+
+    alt evidencia suficiente y fuentes pertinentes
+        Servicio->>+Revision: registrar(analisis, veredicto, fuentes)
+        Revision-->>-Servicio: revision
+        Servicio->>Verificacion: agregarRevision(revision)
+        Servicio->>Verificacion: establecerEstado(estado, veredicto)
+        Servicio->>+Historial: guardar(verificacion)
+        Historial-->>-Servicio: registroConfirmado
+        Servicio-->>-UI: mostrarResultado(verificacion)
+        UI-->>-Persona: veredicto y acceso a fuentes
+    else no hay evidencia suficiente
+        Servicio->>+Revision: registrarSinEvidencia(analisis, fuentes)
+        Revision-->>-Servicio: revision sin veredicto concluyente
+        Servicio->>Verificacion: agregarRevision(revision)
+        Servicio->>Verificacion: marcarSinEvidencia()
+        Servicio->>+Historial: guardar(verificacion)
+        Historial-->>-Servicio: registroConfirmado
+        Servicio-->>-UI: mostrarSinEvidencia(verificacion)
+        UI-->>-Persona: «no se pudo verificar»
+    end

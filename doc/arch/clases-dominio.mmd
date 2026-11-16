@@ -1,0 +1,114 @@
+classDiagram
+    direction LR
+
+    class Usuario {
+        +UUID id
+        +RolUsuario rol
+        +enviarContenido(contenido, tipo)
+        +consultarVerificacion(id)
+        +solicitarSegundaRevision(verificacionId)
+        +resolverDisputa(verificacionId, decision)
+    }
+
+    class InterfazVerifika {
+        +enviarContenido(contenido, tipo)
+        +mostrarResultado(verificacion)
+        +mostrarSinEvidencia(verificacion)
+        +mostrarCoincidencia(verificacion)
+    }
+
+    class ServicioVerificacion {
+        +verificar(contenido, tipo) Verificacion
+        +solicitarSegundaRevision(verificacionId) Verificacion
+        +resolverDisputa(verificacionId, decision) Verificacion
+    }
+
+    class RepositorioVerificaciones {
+        <<interface>>
+        +buscarCoincidencia(contenido, tipo) Verificacion
+        +guardar(verificacion)
+        +buscarPorId(id) Verificacion
+    }
+
+    class Verificacion {
+        +UUID id
+        +String contenidoOriginal
+        +TipoContenido tipo
+        +EstadoVerificacion estado
+        +DateTime creadaEn
+        +crear(contenido, tipo) Verificacion
+        +solicitarVerificacion()
+        +establecerEstado(estado, veredicto)
+        +registrarVeredicto()
+        +registrarContraste()
+        +agregarRevision(revision)
+        +solicitarSegundaRevision()
+        +compararRevisiones()
+        +conservarRevisionOriginal()
+        +conservarAmbasRevisiones()
+        +marcarSinEvidencia()
+        +marcarEnDisputa()
+        +aportarContexto()
+        +iniciarNuevaRevision()
+        +registrarNotaActualizacion()
+        +resolver(decision, nota)
+    }
+
+    class Revision {
+        +UUID id
+        +DateTime creadaEn
+        +String analisis
+        +VeredictoTexto veredicto
+        +registrar(analisis, veredicto, fuentes) Revision
+        +registrarSinEvidencia(analisis, fuentes) Revision
+    }
+
+    class Fuente {
+        +UUID id
+        +String nombre
+        +String referencia
+        +String tipo
+        +Integer erroresConfirmados
+        +esRespaldoUnicoPermitido() boolean
+        +degradar()
+    }
+
+    class AgenteIA {
+        <<external system>>
+        +analizar(contenido, tipo) ResultadoAgente
+    }
+
+    class TipoContenido {
+        <<enumeration>>
+        TEXTO
+        CODIGO
+    }
+
+    class EstadoVerificacion {
+        <<enumeration>>
+        EnAnalisis
+        Verificada
+        Dudosa
+        SinEvidencia
+        SegundaRevision
+        EnDisputa
+        Resuelta
+    }
+
+    class VeredictoTexto {
+        <<enumeration>>
+        Cierto
+        Falso
+        Dudoso
+    }
+
+    Usuario "1" --> "0..*" Verificacion : inicia y consulta
+    Verificacion "1" *-- "0..*" Revision : conserva intentos
+    Revision "0..*" --> "0..*" Fuente : consulta y cita
+    Usuario ..> InterfazVerifika : usa
+    InterfazVerifika --> ServicioVerificacion : solicita
+    ServicioVerificacion --> RepositorioVerificaciones : consulta y guarda
+    ServicioVerificacion --> AgenteIA : delega analisis
+    ServicioVerificacion ..> Verificacion : crea y coordina
+    ServicioVerificacion ..> Revision : registra
+    Verificacion ..> EstadoVerificacion : mantiene estado
