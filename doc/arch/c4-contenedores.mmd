@@ -1,0 +1,23 @@
+C4Container
+title Verifika - Contenedores (propuesta)
+
+Person(usuario, "Persona usuaria", "Envía contenido y consulta resultados")
+Person(moderacion, "Responsable de moderación", "Revisa casos sin evidencia o en disputa")
+
+System_Ext(agente, "Agente de IA", "Analiza contenido y consulta fuentes externas")
+
+System_Boundary(verifika, "Verifika") {
+    Container(interfaz, "InterfazVerifika", "Interfaz web", "Recibe contenido y presenta estado, resultado y fuentes")
+    Container(servicio, "ServicioVerificacion", "Servicio de aplicación", "Coordina búsqueda previa, análisis, revisiones y persistencia")
+    ContainerDb(repositorio, "RepositorioVerificaciones", "Tecnología por definir", "Conserva verificaciones, revisiones y referencias a fuentes")
+}
+
+Rel(usuario, interfaz, "Envía contenido / consulta resultado")
+Rel(moderacion, interfaz, "Revisa casos / registra resolución")
+Rel(interfaz, servicio, "Solicita verificación o consulta")
+Rel(servicio, repositorio, "Busca coincidencias y guarda revisiones")
+Rel(servicio, agente, "Envía contenido y tipo para análisis")
+Rel(agente, servicio, "Devuelve análisis y fuentes")
+Rel(servicio, interfaz, "Entrega estado y resultado")
+
+UpdateRelStyle(usuario, interfaz, $textColor="black", $lineColor="gray")

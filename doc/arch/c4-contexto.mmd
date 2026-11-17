@@ -1,0 +1,16 @@
+C4Context
+title Verifika - Contexto
+
+Person(usuario, "Persona usuaria", "Envía una afirmación o fragmento de código y consulta el resultado")
+Person(moderacion, "Responsable de moderación", "Revisa casos sin evidencia o en disputa")
+
+System(verifika, "Verifika", "Contrasta contenido y conserva verificaciones, revisiones y fuentes")
+System_Ext(agente, "Agente de IA", "Analiza el contenido y propone resultados con fuentes")
+System_Ext(fuentes, "Fuentes externas", "Sitios y documentación consultados para respaldar el análisis")
+
+Rel(usuario, verifika, "Envía contenido y consulta verificaciones")
+Rel(verifika, usuario, "Muestra resultado, estado y fuentes")
+Rel(moderacion, verifika, "Revisa y resuelve casos")
+Rel(verifika, agente, "Solicita análisis de texto o código")
+Rel(agente, fuentes, "Consulta referencias")
+Rel(agente, verifika, "Devuelve análisis y fuentes")
